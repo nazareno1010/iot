@@ -1,20 +1,7 @@
-/*
-  Scan
-
-  This example scans for Bluetooth® Low Energy peripherals and prints out their advertising details:
-  address, local name, advertised service UUID's.
-
-  The circuit:
-  - Arduino MKR WiFi 1010, Arduino Uno WiFi Rev2 board, Arduino Nano 33 IoT,
-    Arduino Nano 33 BLE, or Arduino Nano 33 BLE Sense board.
-
-  This example code is in the public domain.
-*/
-
 #include <ArduinoBLE.h>
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(115200);
   while (!Serial);
 
   // begin initialization
