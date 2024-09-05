@@ -7,14 +7,18 @@ WiFiClient espClient;
 PubSubClient mqtt_client(espClient);
 
 int main() {
+
+    // WiFi Credentials
     std::cout << "ssid: " << ssid << std::endl;
     std::cout << "password: " << password << std::endl;
 
+    // MQTT Broker Settings
     std::cout << "password: " << mqtt_broker << std::endl;
     std::cout << "password: " << mqtt_topic << std::endl;
     std::cout << "password: " << mqtt_username << std::endl;
     std::cout << "password: " << mqtt_password << std::endl;
     std::cout << "password: " << mqtt_port << std::endl;
+    
     return 0;
 }
 
