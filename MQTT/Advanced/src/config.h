@@ -1,10 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// WiFi Credentials
-extern const char* ssid;
-extern const char* password;
-
 // MQTT Broker Settings
 extern const char *mqtt_broker;
 extern const char *mqtt_topic;

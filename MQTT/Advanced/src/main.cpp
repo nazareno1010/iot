@@ -2,15 +2,12 @@
 #include <PubSubClient.h>
 #include "config.h"
 #include <iostream>
+#include <WiFiManager.h>
 
 WiFiClient espClient;
 PubSubClient mqtt_client(espClient);
 
 int main() {
-
-    // WiFi Credentials
-    std::cout << "ssid: " << ssid << std::endl;
-    std::cout << "password: " << password << std::endl;
 
     // MQTT Broker Settings
     std::cout << "password: " << mqtt_broker << std::endl;
@@ -20,6 +17,13 @@ int main() {
     std::cout << "password: " << mqtt_port << std::endl;
     
     return 0;
+}
+
+// Get MAC address without colons
+String getMAC() {
+    String mac = WiFi.macAddress();
+    mac.replace(":", "");
+    return mac;
 }
 
 // Function Declarations
@@ -36,16 +40,6 @@ void setup() {
     mqtt_client.setKeepAlive(60);
     mqtt_client.setCallback(mqttCallback); // Corrected callback function name
     connectToMQTT();
-}
-
-void connectToWiFi() {
-    WiFi.begin(ssid, password);
-    Serial.print("Connecting to WiFi");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
-    Serial.println("\nConnected to WiFi");
 }
 
 void connectToMQTT() {
@@ -75,8 +69,26 @@ void mqttCallback(char *mqtt_topic, byte *payload, unsigned int length) {
     Serial.println("\n-----------------------");
 }
 
-
 void loop() {
+
+    Serial.begin(115200);
+    while (!Serial);  // Wait for serial port to connect
+
+    // Setup WiFi using WiFiManager
+    WiFiManager wm;
+    String SSID = "ESP32-" + getMAC();
+    bool connected = wm.autoConnect(SSID.c_str(), "password");
+
+    if (!connected) {
+        Serial.println("Failed to connect to WiFi");
+        delay(100);
+        ESP.restart(); // Restart ESP32 to begin again
+    } else {
+        Serial.println("Connected to WiFi");
+    }
+
+    // Connecting to MQTT Broker
+
     if (!mqtt_client.connected()) {
         connectToMQTT();
     }
